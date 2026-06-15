@@ -2,6 +2,16 @@
 
 YallaCode is a PHP and MySQL learning-platform prototype with user authentication, role-based access, profile management, and an administrative dashboard. It provides a responsive course-style interface where visitors can create accounts and signed-in users can browse learning content.
 
+## Screenshots
+
+### Login
+
+![YallaCode login page](screenshots/login-page.png)
+
+### Create Account
+
+![YallaCode create-account page](screenshots/create-account-page.png)
+
 ## Features
 
 ### User Experience
@@ -65,13 +75,14 @@ Administrator
 - Database credentials are kept in an ignored local configuration file
 - Uploaded user photos are excluded from the repository
 
-This is an educational project. A production deployment should also add CSRF protection, stricter upload validation, rate limiting, and centralized output escaping.
+This is an educational project. A production deployment should additionally add rate limiting, email verification, secure cookie settings, and structured application logging.
 
 ## Project Structure
 
 ```text
 YallaCode/
 |-- images/                 # Public interface images and branding
+|-- screenshots/            # README interface previews
 |-- users_images/           # Runtime profile uploads (ignored by Git)
 |-- admin.php               # User-management dashboard
 |-- createAccount.html      # Registration form
