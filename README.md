@@ -12,6 +12,12 @@ YallaCode is a PHP and MySQL learning-platform prototype with user authenticatio
 
 ![YallaCode create-account page](screenshots/create-account-page.png)
 
+### Admin Dashboard
+
+The role-protected dashboard lets administrators view, add, edit, and delete users.
+
+![YallaCode admin dashboard](screenshots/admin-dashboard.png)
+
 ## Features
 
 ### User Experience
