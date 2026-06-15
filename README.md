@@ -79,6 +79,7 @@ YallaCode/
 |-- database.sql            # Database and users-table schema
 |-- delete_user.php         # Administrative delete action
 |-- home.php                # Main learning-platform page
+|-- index.php               # Default application entry point
 |-- login.html              # Login form
 |-- login_process.php       # Authentication handler
 |-- logout.php              # Session logout
@@ -91,7 +92,7 @@ YallaCode/
 
 ### Prerequisites
 
-- PHP 7.4 or later with the PDO MySQL extension
+- PHP 7.3 or later with the PDO MySQL and GD extensions
 - MySQL 5.7 or later
 - Apache or PHP's development server
 
@@ -136,8 +137,14 @@ users_images/
 Start Apache and MySQL, then open:
 
 ```text
-http://localhost/YallaCode/login.html
+http://localhost/YallaCode/
 ```
+
+AppServ 9.3 includes the required Apache, PHP, and MySQL services. AppServ itself is not part of the project and should not be committed to GitHub.
+
+The default AppServ upload limit is usually 2 MB. YallaCode uses the same limit for profile images. If the PHP setting is changed, update both `upload_max_filesize` in `php.ini` and the limit in `security.php`.
+
+AppServ 9.3 commonly uses `AllowOverride None`, so `.htaccess` rules may be disabled. The included `users_images/index.php` still blocks directory listings. To enable the additional `.htaccess` protection, change the `C:/AppServ/www` directory setting in Apache's `httpd.conf` to `AllowOverride All`, then restart Apache.
 
 ## Creating an Administrator
 

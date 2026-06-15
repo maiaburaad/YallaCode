@@ -4,6 +4,8 @@ config.php
 # User-generated profile photos
 users_images/*
 !users_images/.gitkeep
+!users_images/.htaccess
+!users_images/index.php
 
 # Environment and editor files
 .env

@@ -43,8 +43,8 @@ function saveProfileImage(array $file): string
         throw new RuntimeException('Please select a profile image.');
     }
 
-    if (($file['size'] ?? 0) > 5 * 1024 * 1024) {
-        throw new RuntimeException('The profile image must be 5 MB or smaller.');
+    if (($file['size'] ?? 0) > 2 * 1024 * 1024) {
+        throw new RuntimeException('The profile image must be 2 MB or smaller.');
     }
 
     $imageInfo = getimagesize($file['tmp_name']);
