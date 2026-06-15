@@ -1,12 +1,9 @@
 <?php
 session_start();  
+require_once __DIR__ . '/security.php';
 
 function getProfileImage() {
-    if (isset($_SESSION['photo']) && !empty($_SESSION['photo']) && file_exists('users_images/' . $_SESSION['photo'])) {
-        return 'users_images/' . $_SESSION['photo'];
-    } else {
-        return 'images/avatar.jpg';
-    }
+    return getProfileImagePath($_SESSION['photo'] ?? '');
 }
 ?>
 
@@ -146,9 +143,9 @@ function getProfileImage() {
             <li class="nav-item dropdown ms-3">
                 <a class="nav-link dropdown-toggle user-profile-section" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     
-                    <img src="<?php echo isset($_SESSION['photo']) ? 'users_images/' . $_SESSION['photo'] : 'images/avatar.jpg'; ?>" class="nav-profile-img" alt="User">
+                    <img src="<?php echo escapeHtml(getProfileImage()); ?>" class="nav-profile-img" alt="User">
                     
-                    <span class="user-name-style"><?php echo isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'User'; ?></span>
+                    <span class="user-name-style"><?php echo escapeHtml($_SESSION['fullname'] ?? 'User'); ?></span>
                 </a>
                 
                 <ul class="dropdown-menu dropdown-menu-end" style="border-top: 3px solid #F05A28;">

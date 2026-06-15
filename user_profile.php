@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/security.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.html");
@@ -9,11 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 $fullname = $_SESSION['fullname'];
 $email    = $_SESSION['email'];
 
-if (isset($_SESSION['photo']) && !empty($_SESSION['photo']) && file_exists('users_images/' . $_SESSION['photo'])) {
-    $photoPath = 'users_images/' . $_SESSION['photo'];
-} else {
-    $photoPath = 'images/avatar.jpg';
-}
+$photoPath = getProfileImagePath($_SESSION['photo'] ?? '');
 ?>
 
 <!DOCTYPE html>
@@ -125,14 +122,14 @@ if (isset($_SESSION['photo']) && !empty($_SESSION['photo']) && file_exists('user
 <div class="profile-wrapper">
     <div class="profile-box">
 
-        <img src="<?php echo $photoPath; ?>" class="profile-img" alt="Profile">
+        <img src="<?php echo escapeHtml($photoPath); ?>" class="profile-img" alt="Profile">
 
         <div class="profile-name">
-            <?php echo htmlspecialchars($fullname); ?>
+            <?php echo escapeHtml($fullname); ?>
         </div>
 
         <div class="profile-email">
-            <?php echo htmlspecialchars($email); ?>
+            <?php echo escapeHtml($email); ?>
         </div>
 
         <a href="logout.php" class="btn btn-logout">

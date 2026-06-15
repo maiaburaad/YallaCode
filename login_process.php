@@ -13,8 +13,13 @@ catch(Throwable $e) {   //ما قدرت اتصل بالداتا بيس
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    $email = htmlspecialchars($_POST['email']);
-    $password_input = $_POST['password'];
+    $email = filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
+    $password_input = $_POST['password'] ?? '';
+
+    if ($email === false || $password_input === '') {
+        header("Location: login.html");
+        exit();
+    }
 
     try {
          //ندور عاليوزر بالايميل
@@ -25,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);  //بترجع مصفوفة فيها بيانات اليوزر لو لقته , فولس اذا لا 
 
         if ($user && password_verify($password_input, $user['password'])) { //لو لقيت اليوزر وكلمة سره صح ادخل
+            session_regenerate_id(true);
             
             //save data to Session
             $_SESSION['user_id']   = $user['id'];

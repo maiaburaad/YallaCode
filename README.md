@@ -59,6 +59,9 @@ Administrator
 - Login verification uses `password_verify()`
 - Database operations use PDO prepared statements
 - Administrative pages validate the session role
+- Administrative changes use CSRF tokens and POST requests
+- Profile uploads validate file content, type, and size
+- Dynamic user content is escaped before HTML output
 - Database credentials are kept in an ignored local configuration file
 - Uploaded user photos are excluded from the repository
 

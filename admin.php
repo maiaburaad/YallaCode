@@ -1,12 +1,15 @@
 <?php
 session_start();
 require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/security.php';
 
 // لو مش مسجل دخول أو مش أدمن، ارجع للوج ان
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.html");
     exit();
 }
+
+$csrfToken = getCsrfToken();
 
 // اتصلت بالداتا بيس
 try {
@@ -101,12 +104,12 @@ try {
 
     <div style="display: flex; align-items: center; gap: 15px;">
         
-        <img src="<?php echo isset($_SESSION['photo']) ? 'users_images/' . $_SESSION['photo'] : 'images/avatar.jpg'; ?>" 
+        <img src="<?php echo escapeHtml(getProfileImagePath($_SESSION['photo'] ?? '')); ?>"
              class="img-circle" 
              style="width: 45px; height: 45px; object-fit: cover; border: 2px solid #F05A28;">
 
         <span style="color: white; font-weight: 600; font-size: 16px;">
-            <?php echo isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'Admin'; ?>
+            <?php echo escapeHtml($_SESSION['fullname'] ?? 'Admin'); ?>
         </span>
 
         <span style="color: #555;">|</span>
@@ -145,28 +148,32 @@ try {
                         <td><?php echo $i++; ?></td>
                         
                         <td class="text-center">
-                            <img src="users_images/<?php echo $user['photo']; ?>" class="img-circle" width="40" height="40" style="object-fit:cover;">
+                            <img src="<?php echo escapeHtml(getProfileImagePath($user['photo'])); ?>" class="img-circle" width="40" height="40" style="object-fit:cover;">
                         </td>
                         
-                        <td><?php echo $user['fullname']; ?></td>
-                        <td><?php echo $user['email']; ?></td>
-                        <td><?php echo $user['role']; ?></td>
+                        <td><?php echo escapeHtml($user['fullname']); ?></td>
+                        <td><?php echo escapeHtml($user['email']); ?></td>
+                        <td><?php echo escapeHtml($user['role']); ?></td>
 
                         <td class="text-center">
                             <button type="button" class="btn btn-success btn-sm edit-btn" 
                                     data-toggle="modal" 
                                     data-target="#editModal"
                                     data-id="<?php echo $user['id']; ?>"  
-                                    data-fullname="<?php echo $user['fullname']; ?>"
-                                    data-email="<?php echo $user['email']; ?>"
-                                    data-role="<?php echo $user['role']; ?>"
-                                    data-photo="<?php echo $user['photo']; ?>">
+                                    data-fullname="<?php echo escapeHtml($user['fullname']); ?>"
+                                    data-email="<?php echo escapeHtml($user['email']); ?>"
+                                    data-role="<?php echo escapeHtml($user['role']); ?>"
+                                    data-photo="<?php echo escapeHtml($user['photo']); ?>">
                                 <span class="glyphicon glyphicon-pencil"></span> Edit
                             </button>
 
-                            <a href="delete_user.php?id=<?php echo $user['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?');">
-                                <span class="glyphicon glyphicon-trash"></span> Delete
-                            </a>
+                            <form action="delete_user.php" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                <input type="hidden" name="csrf_token" value="<?php echo escapeHtml($csrfToken); ?>">
+                                <input type="hidden" name="user_id" value="<?php echo (int) $user['id']; ?>">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <span class="glyphicon glyphicon-trash"></span> Delete
+                                </button>
+                            </form>
 
                         </td>
                     </tr>
@@ -197,6 +204,7 @@ try {
       <div class="modal-body">
         
         <form action="register_process.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="<?php echo escapeHtml($csrfToken); ?>">
             
             <div class="form-group">
                 <label>Full Name</label>
@@ -246,6 +254,7 @@ try {
       <div class="modal-body">
         
         <form action="update_user.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="<?php echo escapeHtml($csrfToken); ?>">
             
             <input type="hidden" name="user_id" id="edit_id">
 
