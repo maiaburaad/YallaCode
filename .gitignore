@@ -1,0 +1,22 @@
+# Local database credentials
+config.php
+
+# User-generated profile photos
+users_images/*
+!users_images/.gitkeep
+
+# Environment and editor files
+.env
+.env.*
+.idea/
+.vscode/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Local scratch page
+test.html
+
+# Unused legacy asset
+images/logo(1).png
